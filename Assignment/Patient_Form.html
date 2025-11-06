@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Master Form</title>
+<style> *{size:100%;}
+form{
+margin-left:45%;
+}
+
+</style>
+
+</head>
+<body>
+    <h2 style="margin-left:45%;
+">Patient Master Form</h2>
+
+    <form onsubmit="return validateform()">
+        Patient ID:<br>
+        <input type="text" id="patientid"><br><br>
+        Patient Name:<br>
+        <input type="text" id="patientname"><br><br>
+        Address:<br>
+        <input type="text" id="address"><br><br>
+        City:<br>
+        <input type="text" id="city"><br><br>
+        Contact:<br>
+        <input type="text" id="contact" maxlength="10"><br><br>
+        Date Of Birth:<br>
+        <input type="date" id="dob"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        function validateform() {
+            let id = document.getElementById("patientid").value.trim();
+            let name = document.getElementById("patientname").value.trim();
+            let address = document.getElementById("address").value.trim();
+            let city = document.getElementById("city").value.trim();
+            let contact = document.getElementById("contact").value.trim();
+            let dob = document.getElementById("dob").value.trim();
+            let dobDate = new Date(dob);
+            let birthYear = dobDate.getFullYear();
+
+
+
+
+            if (id === "" || name === "" || address === "" || city === "" || contact === "" || dob === "") {
+                alert("All fields are required.");
+                return false;
+            }
+
+
+            if (!/^[A-Za-z\s]+$/.test(name)) {
+                alert("Name should contain only letters.");
+                return false;
+            }
+
+
+            if (!/^\d{10}$/.test(contact)) {
+                alert("Invalid Contact Number. Enter exactly 10 digits.");
+                return false;
+            }
+
+            if(birthYear<1925)
+            {
+                alert("Age can't be greter than 100");
+                return false;
+            }
+
+	                alert("Successful!!!!");
+
+            return true;
+        }
+    </script>
+</body>
+</html>

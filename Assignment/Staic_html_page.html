@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Set base font for Tailwind */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="h-screen m-0 p-0 flex flex-col bg-gray-100">
+
+    <!-- 
+      This page uses <iframe> elements, styled with Tailwind CSS, to replicate
+      the layout from the image. The prompt asked for "frames", and <iframe> 
+      (inline frame) is the modern way to achieve this in a single file.
+      The content for each "frame" is embedded using the 'srcdoc' attribute.
+    -->
+
+    <!-- Top Frame -->
+    <div class="flex-shrink-0 h-20 bg-white border-b-2 border-black">
+        <!-- 
+          We use an iframe here to contain the top content.
+          The srcdoc attribute contains a full, independent HTML document.
+          We must load Tailwind inside the srcdoc as well, as iframes are
+          separate documents.
+        -->
+        <iframe class="w-full h-full border-0" srcdoc="
+            <head>
+                <script src='https://cdn.tailwindcss.com'></script>
+                <style>body { font-family: 'Inter', sans-serif; }</style>
+            </head>
+            <body class='m-0 p-0 h-full'>
+                <div class='flex h-full items-stretch'>
+                    <div class='w-1/2 flex items-center p-4 sm:p-6 text-xl sm:text-2xl font-semibold'>
+                        MY WEBSITE
+                    </div>
+                    <div class='w-1/2 flex items-center p-4 sm:p-6 text-xl sm:text-2xl font-semibold border-l-2 border-black'>
+                        MY PROFILE
+                    </div>
+                </div>
+            </body>
+        "></iframe>
+    </div>
+
+    <!-- Bottom Container -->
+    <div class="flex flex-col sm:flex-row flex-grow min-h-0">
+        
+        <!-- Left Frame -->
+        <div class="flex-shrink-0 sm:w-64 bg-white border-b-2 sm:border-r-2 sm:border-b-0 border-black">
+            <!-- 
+              The links below now use onclick events to change the 'srcdoc'
+              of the right-hand iframe (named 'contentFrame').
+              We access it using 'parent.document.querySelector'.
+            -->
+            <iframe class="w-full h-full border-0" srcdoc="
+                <head>
+                    <script src='https://cdn.tailwindcss.com'></script>
+                    <style>body { font-family: 'Inter', sans-serif; }</style>
+                </head>
+                <body class='m-0 p-0'>
+                    <div class='p-6 sm:p-8'>
+                        <a href='#' onclick='parent.document.querySelector(&quot;iframe[name=contentFrame]&quot;).srcdoc = parent.welcomeContent; return false;' class='block text-lg sm:text-xl text-blue-600 hover:text-blue-800 underline mb-6'>Home</a>
+                        <a href='#' onclick='parent.document.querySelector(&quot;iframe[name=contentFrame]&quot;).srcdoc = parent.profileContent; return false;' class='block text-lg sm:text-xl text-blue-600 hover:text-blue-800 underline mb-6'>My Profile</a>
+                    </div>
+                </body>
+            "></iframe>
+        </div>
+
+        <!-- Right Frame -->
+        <!-- We add a 'name' attribute here to target it with the links -->
+        <div class="flex-grow bg-white">
+            <iframe class="w-full h-full border-0" name="contentFrame" srcdoc="
+                <head>
+                    <script src='https://cdn.tailwindcss.com'></script>
+                    <style>body { font-family: 'Inter', sans-serif; }</style>
+                </head>
+                <body class='m-0 p-0'>
+                    <div class='p-6 sm:p-8'>
+                        <h2 class='text-xl sm:text-2xl font-semibold mb-8'>MY PROFILE</h2>
+                        <form class='grid grid-cols-[auto_1fr] gap-6 items-center max-w-md'>
+                            <label class='text-base sm:text-lg font-medium' for='name'>Name: -</label>
+                            <input type='text' id='name' class='border border-gray-500 rounded-lg p-3 text-base sm:text-lg w-full'>
+                            
+                            <label class='text-base sm:text-lg font-medium' for='contact'>Contact No.: -</label>
+                            <input type='text' id='contact' class='border border-gray-500 rounded-lg p-3 text-base sm:text-lg w-full'>
+                        </form>
+                    </div>
+                </body>
+            "></iframe>
+        </div>
+
+    </div>
+
+    <!-- 
+      This script defines the HTML content for our two "tabs" (Home and Profile)
+      as JavaScript strings. The links in the left frame can then
+      load these strings into the right frame's srcdoc.
+      
+      We use 'var' so the variables attach to the 'window' (parent) object,
+      making them accessible to the onclick handlers inside the iframe.
+    -->
+    <script>
+        var welcomeContent = `
+            <head>
+                <script src='https://cdn.tailwindcss.com'><\/script>
+                <style>body { font-family: 'Inter', sans-serif; }</style>
+            </head>
+            <body class='m-0 p-0'>
+                <div class='p-6 sm:p-8'>
+                    <h2 class='text-xl sm:text-2xl font-semibold mb-8'>Welcome to my website</h2>
+                </div>
+            </body>
+        `;
+
+        var profileContent = `
+            <head>
+                <script src='https://cdn.tailwindcss.com'><\/script>
+                <style>body { font-family: 'Inter', sans-serif; }</style>
+            </head>
+            <body class='m-0 p-0'>
+                <div class='p-6 sm:p-8'>
+                    <h2 class='text-xl sm:text-2xl font-semibold mb-8'>MY PROFILE</h2>
+                    <form class='grid grid-cols-[auto_1fr] gap-6 items-center max-w-md'>
+                        <label class='text-base sm:text-lg font-medium' for='name'>Name: -</label>
+                        <input type='text' id='name' class='border border-gray-500 rounded-lg p-3 text-base sm:text-lg w-full'>
+                        
+                        <label class='text-base sm:text-lg font-medium' for='contact'>Contact No.: -</label>
+                        <input type='text' id='contact' class='border border-gray-500 rounded-lg p-3 text-base sm:text-lg w-full'>
+                    </form>
+                </div>
+            </body>
+        `;
+
+        // Set the initial content of the right frame to the profile
+        // (This matches the initial srcdoc, but ensures it's loaded 
+        // using the variable for consistency)
+        document.querySelector('iframe[name="contentFrame"]').srcdoc = profileContent;
+    </script>
+
+    <!-- Load Inter font (outside iframes, for the main page) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</body>
+</html>

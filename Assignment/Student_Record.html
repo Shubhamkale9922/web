@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html ng-app="studentApp">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Records App</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      background-color: #f0f0f0;
+    }
+
+    .container {
+      width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    form {
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    input {
+      flex: 1 1 30%;
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    button {
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+
+    th {
+      background-color: #eee;
+    }
+
+    .delete-btn {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+
+    .delete-btn:hover {
+      background-color: #c0392b;
+    }
+  </style>
+</head>
+<body ng-controller="StudentController">
+
+  <div class="container">
+    <h1>Student Records</h1>
+
+    <form ng-submit="addStudent()">
+      <input type="text" ng-model="newStudent.name" placeholder="Name" required>
+      <input type="number" ng-model="newStudent.age" placeholder="Age" required>
+      <input type="text" ng-model="newStudent.grade" placeholder="Grade" required>
+      <button type="submit">Add Student</button>
+    </form>
+
+    <table ng-if="students.length > 0">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Grade</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="student in students track by $index">
+          <td>{{$index + 1}}</td>
+          <td>{{student.name}}</td>
+          <td>{{student.age}}</td>
+          <td>{{student.grade}}</td>
+          <td>
+            <button class="delete-btn" ng-click="deleteStudent($index)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p ng-if="students.length === 0" style="text-align:center;">No students added yet.</p>
+  </div>
+
+  <script>
+    var app = angular.module('studentApp', []);
+
+    app.controller('StudentController', function($scope) {
+      $scope.students = [];
+      $scope.newStudent = {};
+
+      $scope.addStudent = function() {
+        if ($scope.newStudent.name && $scope.newStudent.age && $scope.newStudent.grade) {
+          $scope.students.push({
+            name: $scope.newStudent.name,
+            age: $scope.newStudent.age,
+            grade: $scope.newStudent.grade
+          });
+          $scope.newStudent = {}; // Clear form
+        }
+      };
+
+      $scope.deleteStudent = function(index) {
+        $scope.students.splice(index, 1);
+      };
+    });
+  </script>
+
+</body>
+</html>

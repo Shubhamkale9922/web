@@ -1,0 +1,88 @@
+<html ng-app="navApp">
+<head>
+  <meta charset="UTF-8">
+  <title>AngularJS Navigation Menu</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+    }
+
+    .nav {
+      display: flex;
+      list-style-type: none;
+      padding: 0;
+      background-color: #f0f0f0;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .nav li {
+      padding: 12px 20px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .nav li:hover {
+      background-color: #ddd;
+    }
+    
+    /* Added: Style for keyboard focus */
+    .nav li:focus {
+      outline: 2px solid #0056b3;
+      outline-offset: -2px;
+    }
+
+    .nav li.active {
+      background-color: #007BFF;
+      color: white;
+      font-weight: bold;
+    }
+
+    .content {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body ng-controller="NavController">
+
+  <ul class="nav">
+    <li  
+      ng-repeat="item in menuItems"  
+      ng-click="selectItem(item)"  
+      ng-class="{active: selectedItem === item}"
+      tabindex="0"
+      ng-keyup="$event.keyCode === 13 || $event.keyCode === 32 ? selectItem(item) : null">
+      {{item.label}}
+    </li>
+  </ul>
+
+  <div class="content">
+    <h3>{{selectedItem.label}} Page</h3>
+    <p>{{selectedItem.content}}</p>
+  </div>
+
+  <script>
+    angular.module('navApp', [])
+      .controller('NavController', function($scope) {
+        $scope.menuItems = [
+          { label: 'Home', content: 'Welcome to the homepage.' },
+          { label: 'About', content: 'This is an AngularJS navigation menu example.' },
+          { label: 'Services', content: 'We offer cool services using AngularJS.' },
+          { label: 'Contact', content: 'Contact us at contact@example.com.' }
+        ];
+
+        $scope.selectedItem = $scope.menuItems[0]; // Default selection
+
+        $scope.selectItem = function(item) {
+          $scope.selectedItem = item;
+        };
+      });
+  </script>
+
+</body>
+</html>
